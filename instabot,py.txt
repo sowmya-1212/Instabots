@@ -1,0 +1,32 @@
+
+from instapy import InstaPy
+from instapy import smart_run
+
+creds = []
+
+with open("creds.txt", 'r') as file:
+    creds = file.read().split(" ")
+
+def main():
+    session = InstaPy(username=creds[0], password = creds[1])
+    session.login()
+    while smart_run(session):
+        session.like_by_tags(['pythonprogramming', 'pythontutorial'], amount=3)
+        session.set_do_like(True, percentage=50)
+        session.set_dont_like(["nsfw"])
+        session.set_do_comment(True, percentage=30)
+        session.set_comments(["Nice post", 'Great Work bro'])
+        session.set_quota_supervisor( 
+            enabled=True, 
+            peak_comments_daily=5, 
+            peak_comments_hourly=5, 
+            peak_likes_daily = 5, 
+            peak_likes_hourly = 5 
+        )
+    
+    # Ending the session
+    session.end()
+
+if __name__ == '__main__':
+    # Calling the main function
+    main()
